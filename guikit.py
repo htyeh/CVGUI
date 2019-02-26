@@ -23,58 +23,126 @@ def disable_alphabet_key(entry_to_dactivate, button_to_dactivate):
     entry_to_dactivate.config(state="disabled")
     button_to_dactivate.config(state="disabled")
 
-def encryption(input_box, key_entry, output_box, alphabet_index, runtime_label):
+def encryption(input_box, key_entry1, key_entry2, output_box, alphabet_index, runtime_label):
+    def encipher(string, n):
+        res = ""
+        for ltr in string:
+            if ltr in alphabet:
+                encipher_index = alphabet.find(ltr)+n
+                if encipher_index >= len(alphabet):
+                    res += alphabet[encipher_index-len(alphabet)]
+                else:
+                    res += alphabet[encipher_index]
+            else:
+                res += ltr
+        return res
+    def encipher_key(string, key):
+        if len(string) <= len(key):
+            return "".join([enciphered for enciphered in map(encipher,string,key)])
+        else:
+            str_segs = sublist(string, len(key))
+            res = ""
+            for string in str_segs:
+                res += "".join([enciphered for enciphered in map(encipher,string,key)])
+            return res
+
     start_time = time.time()
 
-    encrypted_msg = input_box.get("1.0", "end")
-    key = [int(i) for i in key_entry.get().split()]
+    original_msg = input_box.get("1.0", "end")
+    key = [int(i) for i in key_entry1.get().split()]
     if key == []:
         output_box.config(state="normal")
         output_box.delete("1.0", "end")
-        output_box.insert("1.0", encrypted_msg)
+        output_box.insert("1.0", original_msg)
         end_time = time.time()
-        runtime_label["text"] = str(len(encrypted_msg)) + " char(s) encrypted in " + str(round(end_time-start_time, 2)) + " second(s)."
+        runtime_label["text"] = str(len(original_msg)) + " char(s) encrypted in " + str(round(end_time-start_time, 2)) + " second(s)."
         return 0
 
     if alphabet_index.get() == 1:
-        decrypted_msg = la85encipher_key(encrypted_msg, key)
+        alphabet = "abcdefghijklmnopqrstuvwxyzäöüßABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜ !\"$%&'()*+,-./:;<=>?@[\]_"
     elif alphabet_index.get() == 2:
-        decrypted_msg = la137encipher_key(encrypted_msg, key)
+        alphabet = "abcdefghijklmnñopqrstuvwxyzäöüßáàâéèêëíîïóôúùûçœæøåABCDEFGHIJKLMNÑOPQRSTUVWXYZÄÖÜÁÀÂÉÈÊËÍÎÏÓÔÚÙÛÇŒÆØÅ !\"$%&'()*+,-./:;<=>?@[\]_0123456789"
     elif alphabet_index.get() == 3:
-        decrypted_msg = zh_encipher_key(encrypted_msg, key)
+        with open("alphabets/zh_shuffled.txt") as zh_alphabet:
+            alphabet = zh_alphabet.read()
     elif alphabet_index.get() == 4:
-        decrypted_msg = cy111encipher_key(encrypted_msg, key)
+        alphabet = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯІЎЃЅЈЉЊЌЏЂЋЄЇҐҒҚҢҮҰҺӘӨабвгдеёжзийклмнопрстуфхцчшщъыьэюяіўѓѕјљњќџђћʼєїґғқңүұһәө !\"$%&'()*+,-./:;<=>?@[\]_"
+
+    if key_entry2["state"] != "disabled" and key_entry2.get() != "":
+        alphabet_key = [int(i) for i in key_entry2.get().split()]
+        alphabet = encipher_key(alphabet, alphabet_key)
+
+    encrypted_msg = encipher_key(original_msg, key)
+
     output_box.config(state="normal")
     output_box.delete("1.0", "end")
-    output_box.insert("1.0", decrypted_msg)
+    output_box.insert("1.0", encrypted_msg)
     end_time = time.time()
-    runtime_label["text"] = str(len(encrypted_msg)) + " char(s) encrypted in " + str(round(end_time-start_time, 2)) + " second(s)."
+    runtime_label["text"] = str(len(original_msg)) + " char(s) encrypted in " + str(round(end_time-start_time, 2)) + " second(s)."
 
-    # handle 2-step cryp
+
+
+# def decryption(input_box, key_entry, output_box, alphabet_index, runtime_label):
+#     start_time = time.time()
+#
+#     encrypted_msg = input_box.get("1.0", "end")
+#     key = [int(i) for i in key_entry.get().split()]
+#     if key == []:
+#         output_box.config(state="normal")
+#         output_box.delete("1.0", "end")
+#         output_box.insert("1.0", encrypted_msg)
+#         end_time = time.time()
+#         runtime_label["text"] = str(len(encrypted_msg)) + " char(s) encrypted in " + str(round(end_time-start_time, 2)) + " second(s)."
+#         return 0
+#
+#     if alphabet_index.get() == 1:
+#         alphabet = "abcdefghijklmnopqrstuvwxyzäöüßABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜ !\"$%&'()*+,-./:;<=>?@[\]_"
+#     elif alphabet_index.get() == 2:
+#         alphabet = "abcdefghijklmnñopqrstuvwxyzäöüßáàâéèêëíîïóôúùûçœæøåABCDEFGHIJKLMNÑOPQRSTUVWXYZÄÖÜÁÀÂÉÈÊËÍÎÏÓÔÚÙÛÇŒÆØÅ !\"$%&'()*+,-./:;<=>?@[\]_0123456789"
+#     elif alphabet_index.get() == 3:
+#         with open("alphabets/zh_shuffled.txt") as zh_alphabet:
+#             alphabet = zh_alphabet.read()
+#     elif alphabet_index.get() == 4:
+#         alphabet = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯІЎЃЅЈЉЊЌЏЂЋЄЇҐҒҚҢҮҰҺӘӨабвгдеёжзийклмнопрстуфхцчшщъыьэюяіўѓѕјљњќџђћʼєїґғқңүұһәө !\"$%&'()*+,-./:;<=>?@[\]_"
+#
+#     def encipher(string, n):
+#         res = ""
+#         for ltr in string:
+#             if ltr in alphabet:
+#                 encipher_index = alphabet.find(ltr)+n
+#                 if encipher_index >= len(alphabet):
+#                     res += alphabet[encipher_index-len(alphabet)]
+#                 else:
+#                     res += alphabet[encipher_index]
+#             else:
+#                 res += ltr
+#         return res
+#     def encipher_key(string, key):
+#         if len(string) <= len(key):
+#             return "".join([enciphered for enciphered in map(encipher,string,key)])
+#         else:
+#             str_segs = sublist(string, len(key))
+#             res = ""
+#             for string in str_segs:
+#                 res += "".join([enciphered for enciphered in map(encipher,string,key)])
+#             return res
+#
+#     decrypted_msg = encipher_key(encrypted_msg, key)
+#
+#     output_box.config(state="normal")
+#     output_box.delete("1.0", "end")
+#     output_box.insert("1.0", decrypted_msg)
+#     end_time = time.time()
+#     runtime_label["text"] = str(len(encrypted_msg)) + " char(s) encrypted in " + str(round(end_time-start_time, 2)) + " second(s)."
 
 
 def sublist(list, n):
     for i in range(0, len(list), n):
         yield list[i:i+n]
 
-### explaination for separate encipher/decipher functions instead of sole alphabet change: unsolved error when mapping alphabet into the parameter list ###
 
-def la85encipher(string, n):
-    alphabet = "abcdefghijklmnopqrstuvwxyzäöüßABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜ !\"$%&'()*+,-./:;<=>?@[\]_"
-    res = ""
-    for ltr in string:
-        if ltr in alphabet:
-            encipher_index = alphabet.find(ltr)+n
-            if encipher_index >= len(alphabet):
-                res += alphabet[encipher_index-len(alphabet)]
-            else:
-                res += alphabet[encipher_index]
-        else:
-            res += ltr
-    return res
 
-def la85decipher(string, n):
-    alphabet = "abcdefghijklmnopqrstuvwxyzäöüßABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜ !\"$%&'()*+,-./:;<=>?@[\]_"
+def decipher(string, n):
     res = ""
     for ltr in string:
         if ltr in alphabet:
@@ -88,175 +156,12 @@ def la85decipher(string, n):
     return res
 
 
-def la85encipher_key(string, key):
+def decipher_key(string, key):
     if len(string) <= len(key):
-        return "".join([enciphered for enciphered in map(la85encipher,string,key)])
+        return "".join([deciphered for deciphered in map(decipher,string,key)])
     else:
         str_segs = sublist(string, len(key))
         res = ""
         for string in str_segs:
-            res += "".join([enciphered for enciphered in map(la85encipher,string,key)])
-        return res
-
-def la85decipher_key(string, key):
-    if len(string) <= len(key):
-        return "".join([deciphered for deciphered in map(la85decipher,string,key)])
-    else:
-        str_segs = sublist(string, len(key))
-        res = ""
-        for string in str_segs:
-            res += "".join([deciphered for deciphered in map(la85decipher,string,key)])
-        return res
-
-def la137encipher(string, n):
-    alphabet = "abcdefghijklmnñopqrstuvwxyzäöüßáàâéèêëíîïóôúùûçœæøåABCDEFGHIJKLMNÑOPQRSTUVWXYZÄÖÜÁÀÂÉÈÊËÍÎÏÓÔÚÙÛÇŒÆØÅ !\"$%&'()*+,-./:;<=>?@[\]_0123456789"
-    res = ""
-    for ltr in string:
-        if ltr in alphabet:
-            encipher_index = alphabet.find(ltr)+n
-            if encipher_index >= len(alphabet):
-                res += alphabet[encipher_index-len(alphabet)]
-            else:
-                res += alphabet[encipher_index]
-        else:
-            res += ltr
-    return res
-
-def la137decipher(string, n):
-    alphabet = "abcdefghijklmnñopqrstuvwxyzäöüßáàâéèêëíîïóôúùûçœæøåABCDEFGHIJKLMNÑOPQRSTUVWXYZÄÖÜÁÀÂÉÈÊËÍÎÏÓÔÚÙÛÇŒÆØÅ !\"$%&'()*+,-./:;<=>?@[\]_0123456789"
-    res = ""
-    for ltr in string:
-        if ltr in alphabet:
-            decipher_index = alphabet.find(ltr)-n
-            if decipher_index < 0:
-                res += alphabet[decipher_index+len(alphabet)]
-            else:
-                res += alphabet[decipher_index]
-        else:
-            res += ltr
-    return res
-
-
-def la137encipher_key(string, key):
-    if len(string) <= len(key):
-        return "".join([enciphered for enciphered in map(la137encipher,string,key)])
-    else:
-        str_segs = sublist(string, len(key))
-        res = ""
-        for string in str_segs:
-            res += "".join([enciphered for enciphered in map(la137encipher,string,key)])
-        return res
-
-def la137decipher_key(string, key):
-    if len(string) <= len(key):
-        return "".join([deciphered for deciphered in map(la137decipher,string,key)])
-    else:
-        str_segs = sublist(string, len(key))
-        res = ""
-        for string in str_segs:
-            res += "".join([deciphered for deciphered in map(la137decipher,string,key)])
-        return res
-
-
-
-def zh_encipher(string, n):
-    with open("alphabets/zh_shuffled.txt") as zh_alphabet:
-        alphabet = zh_alphabet.read()
-    res = ""
-    for ltr in string:
-        if ltr in alphabet:
-            encipher_index = alphabet.find(ltr)+n
-            if encipher_index >= len(alphabet):
-                res += alphabet[encipher_index-len(alphabet)]
-            else:
-                res += alphabet[encipher_index]
-        else:
-            res += ltr
-    return res
-
-
-def zh_decipher(string, n):
-    with open("alphabets/zh_shuffled.txt") as zh_alphabet:
-        alphabet = zh_alphabet.read()
-    res = ""
-    for ltr in string:
-        if ltr in alphabet:
-            decipher_index = alphabet.find(ltr)-n
-            if decipher_index < 0:
-                res += alphabet[decipher_index+len(alphabet)]
-            else:
-                res += alphabet[decipher_index]
-        else:
-            res += ltr
-    return res
-
-
-def zh_encipher_key(string, key):
-    if len(string) <= len(key):
-        return "".join([enciphered for enciphered in map(zh_encipher, string, key)])
-    else:
-        str_segs = sublist(string, len(key))
-        res = ""
-        for string in str_segs:
-            res += "".join([enciphered for enciphered in map(zh_encipher, string, key)])
-        return res
-
-
-def zh_decipher_key(string, key):
-    if len(string) <= len(key):
-        return "".join([deciphered for deciphered in map(zh_decipher, string, key)])
-    else:
-        str_segs = sublist(string, len(key))
-        res = ""
-        for string in str_segs:
-            res += "".join([deciphered for deciphered in map(zh_decipher, string, key)])
-        return res
-
-def cy111encipher(string, n):
-    alphabet = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯІЎЃЅЈЉЊЌЏЂЋЄЇҐҒҚҢҮҰҺӘӨабвгдеёжзийклмнопрстуфхцчшщъыьэюяіўѓѕјљњќџђћʼєїґғқңүұһәө !\"$%&'()*+,-./:;<=>?@[\]_"
-    res = ""
-    for ltr in string:
-        if ltr in alphabet:
-            encipher_index = alphabet.find(ltr)+n
-            if encipher_index >= len(alphabet):
-                res += alphabet[encipher_index-len(alphabet)]
-            else:
-                res += alphabet[encipher_index]
-        else:
-            res += ltr
-    return res
-
-def cy111decipher(string, n):
-    alphabet = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯІЎЃЅЈЉЊЌЏЂЋЄЇҐҒҚҢҮҰҺӘӨабвгдеёжзийклмнопрстуфхцчшщъыьэюяіўѓѕјљњќџђћʼєїґғқңүұһәө !\"$%&'()*+,-./:;<=>?@[\]_"
-    res = ""
-    for ltr in string:
-        if ltr in alphabet:
-            decipher_index = alphabet.find(ltr)-n
-            if decipher_index < 0:
-                res += alphabet[decipher_index+len(alphabet)]
-            else:
-                res += alphabet[decipher_index]
-        else:
-            res += ltr
-    return res
-
-
-def cy111encipher_key(string, key):
-    if len(string) <= len(key):
-        return "".join([enciphered for enciphered in map(cy111encipher,string,key)])
-    else:
-        str_segs = sublist(string, len(key))
-        res = ""
-        for string in str_segs:
-            res += "".join([enciphered for enciphered in map(cy111encipher,string,key)])
-        return res
-
-def cy111decipher_key(string, key):
-    if len(string) <= len(key):
-        return "".join([deciphered for deciphered in map(cy111decipher,string,key)])
-    else:
-        str_segs = sublist(string, len(key))
-        res = ""
-        for string in str_segs:
-            res += "".join([deciphered for deciphered in map(cy111decipher,string,key)])
+            res += "".join([deciphered for deciphered in map(decipher,string,key)])
         return res

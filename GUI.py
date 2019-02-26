@@ -28,7 +28,7 @@ input_box = tkinter.Text(root, height=20, width=40, font="Verdana 13", wrap="wor
 input_box.grid(row=3, column=0, padx=10, pady=10)
 
 below_input_frame = tkinter.Frame(root)
-encrypt_button = tkinter.Button(below_input_frame, text="ENCRYPT", width=18, command=lambda: guikit.encryption(input_box, key_entry1, output_box, alphabet_index, runtime_label)).grid(row=0, column=0, sticky="w")
+encrypt_button = tkinter.Button(below_input_frame, text="ENCRYPT", width=18, command=lambda: guikit.encryption(input_box, key_entry1, key_entry2, output_box, alphabet_index, runtime_label)).grid(row=0, column=0, sticky="w")
 decrypt_button = tkinter.Button(below_input_frame, text="DECRYPT", width=18, command=root.destroy).grid(row=0, column=1, sticky="w")
 below_input_frame.grid(row=4, column=0)
 
