@@ -3,6 +3,8 @@
 import sys
 import random
 import time
+import tkinter.filedialog
+import tkinter.messagebox
 import pyperclip
 
 def testfunc(var):
@@ -144,3 +146,10 @@ def sublist(list, n):
 
 def copy_output(output_box):
     pyperclip.copy(output_box.get("1.0", "end"))
+
+def open_file(input_box):
+    file_path = tkinter.filedialog.askopenfilename(filetypes=[("text files", ".txt")])
+    with open(file_path) as file:
+        input_box.delete("1.0", "end")
+        input_box.insert("1.0", file.read().strip())
+    # if not filename.endswith('.txt'):

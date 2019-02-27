@@ -19,9 +19,9 @@ menubar = tkinter.Menu(root)
 root.config(menu = menubar)
 option_menu = tkinter.Menu(menubar)
 menubar.add_cascade(label="Options", menu=option_menu)
-option_menu.add_command(label="About", command=lambda: tkinter.messagebox.showinfo("About", "about"))
+option_menu.add_command(label="About", command=lambda: tkinter.messagebox.showinfo("About", "Credits:\n\nProgrammer: Yeh Hao-Tien ye.haotian@campus.lmu.de\nChinese corpus: GitHub: kaienfr\npyperclip: Al Sweigart al@inventwithpython.com"))
 option_menu.add_separator()
-option_menu.add_command(label="Read File")#, command=NewFile)
+option_menu.add_command(label="Read File", command=lambda: guikit.open_file(input_box))
 option_menu.add_separator()
 option_menu.add_command(label="Exit", command=root.quit)
 
@@ -30,8 +30,9 @@ input_box = tkinter.Text(root, height=20, width=40, font="Verdana 13", wrap="wor
 input_box.grid(row=3, column=0, padx=10, pady=10)
 
 below_input_frame = tkinter.Frame(root)
-encrypt_button = tkinter.Button(below_input_frame, text="ENCRYPT", width=18, command=lambda: guikit.encryption(input_box, key_entry1, key_entry2, output_box, alphabet_index, runtime_label)).grid(row=0, column=0, sticky="w")
-decrypt_button = tkinter.Button(below_input_frame, text="DECRYPT", width=18, command=lambda: guikit.decryption(input_box, key_entry1, key_entry2, output_box, alphabet_index, runtime_label)).grid(row=0, column=1, sticky="w")
+encrypt_button = tkinter.Button(below_input_frame, text="ENCRYPT", width=14, command=lambda: guikit.encryption(input_box, key_entry1, key_entry2, output_box, alphabet_index, runtime_label)).grid(row=0, column=0, sticky="w")
+decrypt_button = tkinter.Button(below_input_frame, text="DECRYPT", width=14, command=lambda: guikit.decryption(input_box, key_entry1, key_entry2, output_box, alphabet_index, runtime_label)).grid(row=0, column=1, sticky="w")
+clear_button = tkinter.Button(below_input_frame, text="CLEAR", width=5, command=lambda: input_box.delete("1.0", "end")).grid(row=0, column=2, sticky="w")
 below_input_frame.grid(row=4, column=0)
 
 output_label = tkinter.Label(root, text = "Result appears here:", font = "Verdana 12 bold").grid(row = 2, column=1, sticky="w", padx=5)
