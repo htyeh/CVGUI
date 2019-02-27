@@ -1,5 +1,7 @@
 #!/usr/local/bin/python3
 
+# "alphabet_key" name kept for second key
+
 import time
 import tkinter
 import tkinter.messagebox
@@ -29,7 +31,7 @@ input_box.grid(row=3, column=0, padx=10, pady=10)
 
 below_input_frame = tkinter.Frame(root)
 encrypt_button = tkinter.Button(below_input_frame, text="ENCRYPT", width=18, command=lambda: guikit.encryption(input_box, key_entry1, key_entry2, output_box, alphabet_index, runtime_label)).grid(row=0, column=0, sticky="w")
-decrypt_button = tkinter.Button(below_input_frame, text="DECRYPT", width=18, command=root.destroy).grid(row=0, column=1, sticky="w")
+decrypt_button = tkinter.Button(below_input_frame, text="DECRYPT", width=18, command=lambda: guikit.decryption(input_box, key_entry1, key_entry2, output_box, alphabet_index, runtime_label)).grid(row=0, column=1, sticky="w")
 below_input_frame.grid(row=4, column=0)
 
 output_label = tkinter.Label(root, text = "Result appears here:", font = "Verdana 12 bold").grid(row = 2, column=1, sticky="w", padx=5)
@@ -39,7 +41,7 @@ output_box.grid(row = 3, column = 1, padx=10, pady=10)
 below_output_frame = tkinter.Frame(root)
 runtime_label = tkinter.Label(below_output_frame, text = "runtime information appears here", font = "Verdana 12 italic", width=35, anchor="w")
 runtime_label.grid(row=0, column=0, sticky="we", padx=5)   # force-set width because copy button won't stick to the right side; anchor w aligns label text to the left
-copy_output = tkinter.Button(below_output_frame, text="COPY OUTPUT", command=root.destroy).grid(row=0, column=1, sticky="e")
+copy_output = tkinter.Button(below_output_frame, text="COPY OUTPUT", command=lambda: guikit.copy_output(output_box)).grid(row=0, column=1, sticky="e")
 below_output_frame.grid(row=4, column=1, sticky="w")    # sticky w attaches the frame & runtime info to the left edge below the output box
 
 alph_key_frame = tkinter.Frame(root)
@@ -73,7 +75,7 @@ disable_2s_cryp.grid(row=9, column=0, sticky="w", padx=5)
 disable_2s_cryp.select() # default disable 2-step cryp
 
 alpha_key_label_frame = tkinter.Frame(alph_key_frame)
-key_label2 = tkinter.Label(alpha_key_label_frame, text="Alphabet key:", font = "Verdana 12 bold", width=25, anchor="w").grid(row=0, column=0, sticky="w", padx=5, pady=(10,0))  # pady pushes the label down a line from the radio buttons
+key_label2 = tkinter.Label(alpha_key_label_frame, text="Second key:", font = "Verdana 12 bold", width=25, anchor="w").grid(row=0, column=0, sticky="w", padx=5, pady=(10,0))  # pady pushes the label down a line from the radio buttons
 auto_key_2 = tkinter.Button(alpha_key_label_frame, text="Generate", command=lambda: guikit.auto_key(key_entry2))
 auto_key_2.config(state="disabled")
 auto_key_2.grid(row=0, column=1, sticky="e", padx=5, pady=(10,0))
