@@ -154,7 +154,7 @@ def open_file(input_box):
         input_box.insert("1.0", file.read().strip())
     # if not filename.endswith('.txt'):
 
-def trans_file(input_box, key_entry1, key_entry2, output_box, alphabet_index, runtime_label):
+def enc_file(key_entry1, key_entry2, alphabet_index, runtime_label):
     tkinter.messagebox.showinfo("", "Translated file will end in .cv.txt and will be in the same directory as the original file.")
     file_path = tkinter.filedialog.askopenfilename(filetypes=[("text files", ".txt")])
 
@@ -186,11 +186,7 @@ def trans_file(input_box, key_entry1, key_entry2, output_box, alphabet_index, ru
         original_msg = file.read().strip()
     key = [int(i) for i in key_entry1.get().split()]
     if key == []:
-        output_box.config(state="normal")
-        output_box.delete("1.0", "end")
-        output_box.insert("1.0", original_msg)
-        end_time = time.time()
-        runtime_label["text"] = str(len(original_msg)) + " char(s) encrypted in " + str(round(end_time-start_time, 2)) + " second(s)."
+        tkinter.messagebox.showinfo("", "Not encrypted, key empty.")
         return 0
 
     if alphabet_index.get() == 1:
@@ -208,8 +204,70 @@ def trans_file(input_box, key_entry1, key_entry2, output_box, alphabet_index, ru
         second_key = [int(i) for i in key_entry2.get().split()]
         encrypted_msg = encipher_key(encrypted_msg, second_key)
 
-    output_box.config(state="normal")
-    output_box.delete("1.0", "end")
-    output_box.insert("1.0", encrypted_msg)
+    output_filepath = file_path[:-4] + ".cv.txt"
+    with open(output_filepath, "w") as output_file:
+        output_file.write(encrypted_msg)
+
     end_time = time.time()
-    runtime_label["text"] = str(len(original_msg)) + " char(s) encrypted in " + str(round(end_time-start_time, 2)) + " second(s)."
+    msg = str(len(original_msg)) + " char(s) encrypted in " + str(round(end_time-start_time, 2)) + " second(s)."
+    tkinter.messagebox.showinfo("", msg)
+
+
+
+def dec_file(key_entry1, key_entry2, alphabet_index, runtime_label):
+    tkinter.messagebox.showinfo("", "Translated file will end in .txt and will be in the same directory as the original file.")
+    file_path = tkinter.filedialog.askopenfilename(filetypes=[("cv files", ".txt")])
+
+    def decipher(string, n):
+        res = ""
+        for ltr in string:
+            if ltr in alphabet:
+                decipher_index = alphabet.find(ltr)-n
+                if decipher_index < 0:
+                    res += alphabet[decipher_index+len(alphabet)]
+                else:
+                    res += alphabet[decipher_index]
+            else:
+                res += ltr
+        return res
+    def decipher_key(string, key):
+        if len(string) <= len(key):
+            return "".join([deciphered for deciphered in map(decipher,string,key)])
+        else:
+            str_segs = sublist(string, len(key))
+            res = ""
+            for string in str_segs:
+                res += "".join([deciphered for deciphered in map(decipher,string,key)])
+            return res
+
+    start_time = time.time()
+
+    with open(file_path) as file:
+        original_msg = file.read().strip()
+    key = [int(i) for i in key_entry1.get().split()]
+    if key == []:
+        tkinter.messagebox.showinfo("", "Not decrypted, key empty.")
+        return 0
+
+    if alphabet_index.get() == 1:
+        alphabet = "abcdefghijklmnopqrstuvwxyzäöüßABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜ !\"$%&'()*+,-./:;<=>?@[\]_"
+    elif alphabet_index.get() == 2:
+        alphabet = "abcdefghijklmnñopqrstuvwxyzäöüßáàâéèêëíîïóôúùûçœæøåABCDEFGHIJKLMNÑOPQRSTUVWXYZÄÖÜÁÀÂÉÈÊËÍÎÏÓÔÚÙÛÇŒÆØÅ !\"$%&'()*+,-./:;<=>?@[\]_0123456789"
+    elif alphabet_index.get() == 3:
+        with open("alphabets/zh_shuffled.txt") as zh_alphabet:
+            alphabet = zh_alphabet.read()
+    elif alphabet_index.get() == 4:
+        alphabet = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯІЎЃЅЈЉЊЌЏЂЋЄЇҐҒҚҢҮҰҺӘӨабвгдеёжзийклмнопрстуфхцчшщъыьэюяіўѓѕјљњќџђћʼєїґғқңүұһәө !\"$%&'()*+,-./:;<=>?@[\]_"
+
+    decrypted_msg = decipher_key(original_msg, key)
+    if key_entry2["state"] != "disabled" and key_entry2.get() != "":
+        second_key = [int(i) for i in key_entry2.get().split()]
+        decrypted_msg = decipher_key(decrypted_msg, second_key)
+
+    output_filepath = file_path[:-7] + ".txt"
+    with open(output_filepath, "w") as output_file:
+        output_file.write(decrypted_msg)
+
+    end_time = time.time()
+    msg = str(len(original_msg)) + " char(s) decrypted in " + str(round(end_time-start_time, 2)) + " second(s)."
+    tkinter.messagebox.showinfo("", msg)
