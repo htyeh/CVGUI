@@ -149,6 +149,9 @@ def copy_output(output_box):
 
 def open_file(input_box):
     file_path = tkinter.filedialog.askopenfilename(filetypes=[("text files", ".txt")])
+    if not file_path:
+        tkinter.messagebox.showinfo("", "No file chosen.")
+        return 0
     with open(file_path) as file:
         input_box.delete("1.0", "end")
         input_box.insert("1.0", file.read().strip())
@@ -157,6 +160,9 @@ def open_file(input_box):
 def enc_file(key_entry1, key_entry2, alphabet_index, runtime_label):
     tkinter.messagebox.showinfo("", "Translated file will end in .cv.txt and will be in the same directory as the original file.")
     file_path = tkinter.filedialog.askopenfilename(filetypes=[("text files", ".txt")])
+    if not file_path:
+        tkinter.messagebox.showinfo("", "No file chosen.")
+        return 0
 
     def encipher(string, n):
         res = ""
@@ -217,6 +223,9 @@ def enc_file(key_entry1, key_entry2, alphabet_index, runtime_label):
 def dec_file(key_entry1, key_entry2, alphabet_index, runtime_label):
     tkinter.messagebox.showinfo("", "Translated file will end in .txt and will be in the same directory as the original file.")
     file_path = tkinter.filedialog.askopenfilename(filetypes=[("cv files", ".txt")])
+    if not file_path:
+        tkinter.messagebox.showinfo("", "No file chosen.")
+        return 0
 
     def decipher(string, n):
         res = ""
