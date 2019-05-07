@@ -49,10 +49,19 @@ def encryption(input_box, key_entry1, key_entry2, output_box, alphabet_index, ru
                 res += "".join([enciphered for enciphered in map(encipher,string,key)])
             return res
 
+# key error handling
+    try:
+        int("".join(key_entry1.get().split()))
+    except ValueError:
+        tkinter.messagebox.showinfo("", "Key error!")
+        return 0
+# key error handling
+
     start_time = time.time()
 
     original_msg = input_box.get("1.0", "end").strip()
     key = [int(i) for i in key_entry1.get().split()]
+
     if key == []:
         output_box.config(state="normal")
         output_box.delete("1.0", "end")
@@ -104,6 +113,14 @@ def decryption(input_box, key_entry1, key_entry2, output_box, alphabet_index, ru
             for string in str_segs:
                 res += "".join([deciphered for deciphered in map(decipher,string,key)])
             return res
+
+# key error handling
+    try:
+        int("".join(key_entry1.get().split()))
+    except ValueError:
+        tkinter.messagebox.showinfo("", "Key error!")
+        return 0
+# key error handling
 
     start_time = time.time()
 
