@@ -13,10 +13,7 @@ def testfunc(var):
 
 def auto_key(key_entry):
     key_entry.delete(0, "end")
-    insert_string = ""
-    for i in range(6):
-        insert_string += str(random.randint(1, 9)) + " "
-    key_entry.insert(0, insert_string)
+    key_entry.insert(0, " ".join([str(random.randint(1,9)) for i in range(6)]))
 
 def enable_alphabet_key(entry_to_activate, button_to_activate):
     entry_to_activate.config(state="normal")
