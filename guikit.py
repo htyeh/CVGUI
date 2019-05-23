@@ -7,21 +7,20 @@ import tkinter.filedialog
 import tkinter.messagebox
 import pyperclip
 
-def testfunc(var):
-    print(var.get())
-    print(type(var.get()))
-
 def auto_key(key_entry):
     key_entry.delete(0, "end")
     key_entry.insert(0, " ".join([str(random.randint(1,9)) for i in range(6)]))
 
 def enable_alphabet_key(entry_to_activate, button_to_activate):
     entry_to_activate.config(state="normal")
+    entry_to_activate.delete(0, "end")
     button_to_activate.config(state="normal")
 
-def disable_alphabet_key(entry_to_dactivate, button_to_dactivate):
-    entry_to_dactivate.config(state="disabled")
-    button_to_dactivate.config(state="disabled")
+def disable_alphabet_key(entry_to_deactivate, button_to_deactivate):
+    entry_to_deactivate.delete(0, "end")
+    entry_to_deactivate.insert(0, "enable 2-step encryption to enter")
+    entry_to_deactivate.config(state="disabled")
+    button_to_deactivate.config(state="disabled")
 
 def encryption(input_box, key_entry1, key_entry2, output_box, alphabet_index, runtime_label):
     def encipher(string, n):
