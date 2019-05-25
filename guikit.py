@@ -303,3 +303,19 @@ def hide_keys(key_entry1, key_entry2):
         key_entry1.config(show="")
         if key_entry2["state"] != "disabled" and key_entry2.get() != "":
             key_entry2.config(show="")
+
+def read_keys(key_entry1, key_entry2):
+    file_path = tkinter.filedialog.askopenfilename(filetypes=[("key files", ".key")])
+    if not file_path:
+        tkinter.messagebox.showinfo("", "No file chosen.")
+        return 0
+    with open(file_path) as file:
+        keys = [file.readline().strip() for i in range(2)]
+        key_entry1.delete(0, "end")
+        key_entry1.insert(0, keys[0])
+        if keys[1]:
+            key_entry2.config(state="normal")
+            key_entry2.delete(0, "end")
+            key_entry2.insert(0, keys[1])
+    key_entry1.config(show="*")
+    key_entry2.config(show="*")

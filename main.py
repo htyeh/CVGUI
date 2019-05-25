@@ -32,12 +32,12 @@ input_box = tkinter.Text(root, height=20, width=40, font="Verdana 13", wrap="wor
 input_box.grid(row=3, column=0, padx=10, pady=10)
 
 below_input_frame = tkinter.Frame(root)
-encrypt_button = tkinter.Button(below_input_frame, text="ENCRYPT", width=14, command=lambda: guikit.encryption(input_box, key_entry1, key_entry2, output_box, alphabet_index, runtime_label)).grid(row=0, column=0, sticky="w")
-decrypt_button = tkinter.Button(below_input_frame, text="DECRYPT", width=14, command=lambda: guikit.decryption(input_box, key_entry1, key_entry2, output_box, alphabet_index, runtime_label)).grid(row=0, column=1, sticky="w")
-clear_button = tkinter.Button(below_input_frame, text="CLEAR", width=5, command=lambda: input_box.delete("1.0", "end")).grid(row=0, column=2, sticky="w")
-encrypt_file_button = tkinter.Button(below_input_frame, text="ENCRYPT FILE", width=14, command=lambda: guikit.enc_file(key_entry1, key_entry2, alphabet_index, runtime_label)).grid(row=1, column=0, sticky="w")
-decrypt_file_button = tkinter.Button(below_input_frame, text="DECRYPT FILE", width=14, command=lambda: guikit.dec_file(key_entry1, key_entry2, alphabet_index, runtime_label)).grid(row=1, column=1, sticky="w")
-exit_button = tkinter.Button(below_input_frame, text="EXIT", width=5, command=root.quit).grid(row=1, column=2, sticky="w")
+encrypt_button = tkinter.Button(below_input_frame, text="ENCRYPT", width=11, command=lambda: guikit.encryption(input_box, key_entry1, key_entry2, output_box, alphabet_index, runtime_label)).grid(row=0, column=0, sticky="w")
+decrypt_button = tkinter.Button(below_input_frame, text="DECRYPT", width=11, command=lambda: guikit.decryption(input_box, key_entry1, key_entry2, output_box, alphabet_index, runtime_label)).grid(row=0, column=1, sticky="w")
+clear_button = tkinter.Button(below_input_frame, text="CLEAR", width=11, command=lambda: input_box.delete("1.0", "end")).grid(row=0, column=2, sticky="w")
+encrypt_file_button = tkinter.Button(below_input_frame, text="ENCRYPT FILE", width=11, command=lambda: guikit.enc_file(key_entry1, key_entry2, alphabet_index, runtime_label)).grid(row=1, column=0, sticky="w")
+decrypt_file_button = tkinter.Button(below_input_frame, text="DECRYPT FILE", width=11, command=lambda: guikit.dec_file(key_entry1, key_entry2, alphabet_index, runtime_label)).grid(row=1, column=1, sticky="w")
+exit_button = tkinter.Button(below_input_frame, text="EXIT", width=11, command=root.quit).grid(row=1, column=2, sticky="w")
 below_input_frame.grid(row=4, column=0)
 
 output_label = tkinter.Label(root, text = "Result appears here:", font = "Verdana 12 bold").grid(row = 2, column=1, sticky="w", padx=5)
@@ -48,7 +48,7 @@ below_output_frame = tkinter.Frame(root)
 runtime_label = tkinter.Label(below_output_frame, text = "runtime information appears here", font = "Verdana 12 italic", width=35, anchor="w")
 runtime_label.grid(row=0, column=0, sticky="we", padx=5)   # force-set width because copy button won't stick to the right side; anchor w aligns label text to the left
 copy_output = tkinter.Button(below_output_frame, text="COPY OUTPUT", command=lambda: guikit.copy_output(output_box)).grid(row=0, column=1, sticky="e")
-placeholder_label = tkinter.Label(below_output_frame, text = "", font = "Verdana 12 italic", width=35, anchor="w").grid(row=1, column=0, sticky="we", padx=5)   # to keep runtime_label near encrypt/decrypt buttons because below_input_frame now 2 rows
+read_key_button = tkinter.Button(below_output_frame, text="READ KEY(S) FROM KEYFILE", width=40, command=lambda: guikit.read_keys(key_entry1, key_entry2)).grid(row=1, column=0, columnspan=2)
 below_output_frame.grid(row=4, column=1, sticky="w")    # sticky w attaches the frame & runtime info to the left edge below the output box
 
 alph_key_frame = tkinter.Frame(root)
