@@ -59,11 +59,11 @@ alphabet_index = tkinter.IntVar()   # use this index later to determine which al
 # std85.grid(row=1, column=0, sticky="w", padx=5, pady=(5,0))    # pady 5 between alphabet label and first alphabet button
 # std85.select()  # default alphabet, therefore can only be grided afterwards
 
-std137 = tkinter.Radiobutton(alph_key_frame, text="Latin-Improved(DA/DE/EN/ES/FR/IT/NO/SV)", variable=alphabet_index, value=2)
+std137 = tkinter.Radiobutton(alph_key_frame, text="Latin+ (DA/DE/EN/ES/FR/IT/NO/SV)", variable=alphabet_index, value=2)
 std137.grid(row=1, column=0, sticky="w", padx=5, pady=(5,0))    # pady 5 between alphabet label and first alphabet button
 std137.select()  # default alphabet, therefore can only be grided afterwards
-zh_shuffled = tkinter.Radiobutton(alph_key_frame, text="Chinese(ZH_CN/ZH_TW)", variable=alphabet_index, value=3).grid(row=2, column=0, sticky="w", padx=5)
-cyrillic111 = tkinter.Radiobutton(alph_key_frame, text="Cyrillic(BE/KK/MK/MN/RU/SR/UK)", variable=alphabet_index, value=4).grid(row=3, column=0, sticky="w", padx=5)
+zh_shuffled = tkinter.Radiobutton(alph_key_frame, text="Chinese (ZH_CN/ZH_TW)", variable=alphabet_index, value=3).grid(row=2, column=0, sticky="w", padx=5)
+cyrillic111 = tkinter.Radiobutton(alph_key_frame, text="Cyrillic (BE/KK/MK/MN/RU/SR/UK)", variable=alphabet_index, value=4).grid(row=3, column=0, sticky="w", padx=5)
 hide_key_button = tkinter.Button(alph_key_frame, text="HIDE/UNHIDE KEYS", width=30, command=lambda: guikit.hide_keys(key_entry1, key_entry2)).grid(row=4, column=0, sticky="w", padx=5)
 # exit_button = tkinter.Button(below_input_frame, text="EXIT", width=5, command=root.quit).grid(row=1, column=2, sticky="w")
 
