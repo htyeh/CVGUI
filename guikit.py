@@ -293,3 +293,13 @@ def dec_file(key_entry1, key_entry2, alphabet_index, runtime_label):
     end_time = time.time()
     msg = str(len(original_msg)) + " char(s) decrypted in " + str(round(end_time-start_time, 2)) + " second(s)."
     tkinter.messagebox.showinfo("", msg)
+
+def hide_keys(key_entry1, key_entry2):
+    if key_entry1["show"] != "*":
+        key_entry1.config(show="*")
+        if key_entry2["state"] != "disabled" and key_entry2.get() != "":
+            key_entry2.config(show="*")
+    else:
+        key_entry1.config(show="")
+        if key_entry2["state"] != "disabled" and key_entry2.get() != "":
+            key_entry2.config(show="")

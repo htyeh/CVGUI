@@ -35,6 +35,9 @@ below_input_frame = tkinter.Frame(root)
 encrypt_button = tkinter.Button(below_input_frame, text="ENCRYPT", width=14, command=lambda: guikit.encryption(input_box, key_entry1, key_entry2, output_box, alphabet_index, runtime_label)).grid(row=0, column=0, sticky="w")
 decrypt_button = tkinter.Button(below_input_frame, text="DECRYPT", width=14, command=lambda: guikit.decryption(input_box, key_entry1, key_entry2, output_box, alphabet_index, runtime_label)).grid(row=0, column=1, sticky="w")
 clear_button = tkinter.Button(below_input_frame, text="CLEAR", width=5, command=lambda: input_box.delete("1.0", "end")).grid(row=0, column=2, sticky="w")
+encrypt_file_button = tkinter.Button(below_input_frame, text="ENCRYPT FILE", width=14, command=lambda: guikit.enc_file(key_entry1, key_entry2, alphabet_index, runtime_label)).grid(row=1, column=0, sticky="w")
+decrypt_file_button = tkinter.Button(below_input_frame, text="DECRYPT FILE", width=14, command=lambda: guikit.dec_file(key_entry1, key_entry2, alphabet_index, runtime_label)).grid(row=1, column=1, sticky="w")
+exit_button = tkinter.Button(below_input_frame, text="EXIT", width=5, command=root.quit).grid(row=1, column=2, sticky="w")
 below_input_frame.grid(row=4, column=0)
 
 output_label = tkinter.Label(root, text = "Result appears here:", font = "Verdana 12 bold").grid(row = 2, column=1, sticky="w", padx=5)
@@ -45,17 +48,24 @@ below_output_frame = tkinter.Frame(root)
 runtime_label = tkinter.Label(below_output_frame, text = "runtime information appears here", font = "Verdana 12 italic", width=35, anchor="w")
 runtime_label.grid(row=0, column=0, sticky="we", padx=5)   # force-set width because copy button won't stick to the right side; anchor w aligns label text to the left
 copy_output = tkinter.Button(below_output_frame, text="COPY OUTPUT", command=lambda: guikit.copy_output(output_box)).grid(row=0, column=1, sticky="e")
+placeholder_label = tkinter.Label(below_output_frame, text = "", font = "Verdana 12 italic", width=35, anchor="w").grid(row=1, column=0, sticky="we", padx=5)   # to keep runtime_label near encrypt/decrypt buttons because below_input_frame now 2 rows
 below_output_frame.grid(row=4, column=1, sticky="w")    # sticky w attaches the frame & runtime info to the left edge below the output box
 
 alph_key_frame = tkinter.Frame(root)
 alphabet_label = tkinter.Label(alph_key_frame, text="Alphabet selection:", font = "Verdana 12 bold").grid(row=0, column=0, sticky="w", padx=5)
 alphabet_index = tkinter.IntVar()   # use this index later to determine which alphabet to use
-std85 = tkinter.Radiobutton(alph_key_frame, text="std85(DE/EN)", variable=alphabet_index, value=1)
-std85.grid(row=1, column=0, sticky="w", padx=5, pady=(5,0))    # pady 5 between alphabet label and first alphabet button
-std85.select()  # default alphabet, therefore can only be grided afterwards
-std137 = tkinter.Radiobutton(alph_key_frame, text="std137(DA/DE/EN/ES/FR/IT/NO/SV)", variable=alphabet_index, value=2).grid(row=2, column=0, sticky="w", padx=5)
-zh_shuffled = tkinter.Radiobutton(alph_key_frame, text="Chinese(ZH_CN/ZH_TW)", variable=alphabet_index, value=3).grid(row=3, column=0, sticky="w", padx=5)
-cyrillic111 = tkinter.Radiobutton(alph_key_frame, text="Cyrillic(BE/KK/MK/MN/RU/SR/UK)", variable=alphabet_index, value=4).grid(row=4, column=0, sticky="w", padx=5)
+######  std85 taken out ######
+# std85 = tkinter.Radiobutton(alph_key_frame, text="std85(DE/EN)", variable=alphabet_index, value=1)
+# std85.grid(row=1, column=0, sticky="w", padx=5, pady=(5,0))    # pady 5 between alphabet label and first alphabet button
+# std85.select()  # default alphabet, therefore can only be grided afterwards
+
+std137 = tkinter.Radiobutton(alph_key_frame, text="Latin-Improved(DA/DE/EN/ES/FR/IT/NO/SV)", variable=alphabet_index, value=2)
+std137.grid(row=1, column=0, sticky="w", padx=5, pady=(5,0))    # pady 5 between alphabet label and first alphabet button
+std137.select()  # default alphabet, therefore can only be grided afterwards
+zh_shuffled = tkinter.Radiobutton(alph_key_frame, text="Chinese(ZH_CN/ZH_TW)", variable=alphabet_index, value=3).grid(row=2, column=0, sticky="w", padx=5)
+cyrillic111 = tkinter.Radiobutton(alph_key_frame, text="Cyrillic(BE/KK/MK/MN/RU/SR/UK)", variable=alphabet_index, value=4).grid(row=3, column=0, sticky="w", padx=5)
+hide_key_button = tkinter.Button(alph_key_frame, text="HIDE/UNHIDE KEYS", width=30, command=lambda: guikit.hide_keys(key_entry1, key_entry2)).grid(row=4, column=0, sticky="w", padx=5)
+# exit_button = tkinter.Button(below_input_frame, text="EXIT", width=5, command=root.quit).grid(row=1, column=2, sticky="w")
 
 # padx creates more space between the output box and the button list
 # pady extends the spacing in between the radio buttons
